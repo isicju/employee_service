@@ -2,6 +2,7 @@ package com.example.demo.e2e;
 
 
 import com.example.demo.DemoApplication;
+import lombok.extern.log4j.Log4j2;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Log4j2
 public class UITests {
 
     private String host;
@@ -35,16 +37,17 @@ public class UITests {
     public void init() {
         this.host = Optional.ofNullable(System.getProperty("uitest.host"))
                 .orElseGet(() -> {
-                    System.out.println("please pass argument -Duitest.host");
+                    log.error("please set env variable uitest.host");
                     return "http://localhost:8080";
                 });
         this.recipientMail = Optional.ofNullable(System.getProperty("uitest.mail"))
                 .orElseGet(() -> {
-                    System.out.println("please pass argument -Duitest.mail");
+                    log.error("please set env variable uitest.mail, currently use default email");
                     return "isicju@gmail.com";
                 });
     }
 
+    @Ignore
     @Test
     public void phantomDriver() throws Exception {
         uiTest(new PhantomJSDriver());
