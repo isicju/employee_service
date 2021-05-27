@@ -63,7 +63,7 @@ public class UITests {
     private void uiTest(WebDriver driver) throws Exception {
         String[] args1 = {"--spring.profiles.active=test"};
         ConfigurableApplicationContext ctx = SpringApplication.run(DemoApplication.class, args1);
-        Thread.sleep(25000);
+        Thread.sleep(30000);
         driver.get(this.host);
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         WebElement secondRecord = driver.findElement(By.xpath("//table/tbody/tr[2]"));
