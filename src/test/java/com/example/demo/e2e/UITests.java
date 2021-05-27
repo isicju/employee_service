@@ -52,8 +52,8 @@ public class UITests {
         uiTest(new PhantomJSDriver());
     }
 
-    @Ignore
-    @Test
+//    @Ignore
+//    @Test
     public void chromeDriver() throws Exception {
         String chromeDriverPath = (new File("src/test/resources").getAbsolutePath() + "\\chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
