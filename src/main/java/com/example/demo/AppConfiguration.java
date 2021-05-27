@@ -49,45 +49,7 @@ public class AppConfiguration {
         return dataSource;
     }
 
-    @Profile("uat")
-    @Bean
-    public DataSource uatDataSource() {
-        log.info("initializing datasource uat database...");
-        String password = System.getProperty("database_password");
-        String user = System.getProperty("database_user");
-        String ip = System.getProperty("database_ip");
-        String port = System.getProperty("database_port");
-
-        if (isEmpty(password) || isEmpty(user) || isEmpty(ip) || isEmpty(port)) {
-            throw new RuntimeException("database_password, database_user, database_ip, database_port has to be set as ENVIRONMENT VARIABLE!");
-        }
-
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setPassword(password);
-        dataSource.setUser(user);
-        dataSource.setURL("jdbc:mysql://" + ip + ":" + port + "/?useUnicode=true&serverTimezone=UTC");
-        return dataSource;
-    }
-
-    @Profile("test")
-    @Bean
-    public DataSource embeddedDataSource() {
-        log.info("initializing datasource h2 database...");
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:mem:hr;DB_CLOSE_DELAY=-1;MODE=MYSQL;DATABASE_TO_UPPER=false");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("sa");
-
-        // schema init
-        Resource initSchema = new ClassPathResource("scripts/schema-h2.sql");
-        DatabasePopulator databasePopulator = new ResourceDatabasePopulator(initSchema);
-        DatabasePopulatorUtils.execute(databasePopulator, dataSource);
-
-        return dataSource;
-    }
-
-    @Profile({"test", "prod", "uat"})
+    @Profile("prod")
     @Bean("emailProperties")
     public Properties emailProperties(@Qualifier("appProperties") Properties applicationProperties) {
         Properties properties = new Properties();
@@ -95,16 +57,8 @@ public class AppConfiguration {
         properties.put("mail.smtp.port", applicationProperties.getProperty("mail.smtp.port"));
         properties.put("mail.smtp.starttls.enable", applicationProperties.getProperty("mail.smtp.starttls.enable"));
         properties.put("mail.smtp.auth", applicationProperties.getProperty("mail.smtp.auth"));
-        String fromEmail = Optional.ofNullable(System.getProperty("fromEmail")).orElseGet(() -> {
-            System.out.println("fromEmail system variable is null, using app properties value");
-            return applicationProperties.getProperty("fromEmail");
-        });
-        String appPassword = Optional.ofNullable(System.getProperty("appPassword")).orElseGet(() -> {
-            System.out.println("appPassword system variable is null, using app properties value");
-            return applicationProperties.getProperty("appPassword");
-        });
-        properties.put("fromEmail", fromEmail);
-        properties.put("appPassword", appPassword);
+        properties.put("fromEmail", applicationProperties.getProperty("fromEmail"));
+        properties.put("appPassword", applicationProperties.getProperty("appPassword"));
         return properties;
     }
 
