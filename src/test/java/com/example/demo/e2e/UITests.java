@@ -47,7 +47,6 @@ public class UITests {
                 });
     }
 
-    @Ignore
     @Test
     public void phantomDriver() throws Exception {
         uiTest(new PhantomJSDriver());
