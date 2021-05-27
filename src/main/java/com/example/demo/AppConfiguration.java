@@ -40,7 +40,7 @@ public class AppConfiguration {
 
     @Profile("prod")
     @Bean
-    public DataSource prodDataSource(Properties applicationProperties) {
+    public DataSource prodDataSource(@Qualifier("appProperties") Properties applicationProperties) {
         log.info("initializing datasource prod database...");
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setPassword(applicationProperties.getProperty("database_password"));
