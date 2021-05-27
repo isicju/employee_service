@@ -23,7 +23,7 @@ import static org.apache.logging.log4j.util.Strings.isEmpty;
 @PropertySource("classpath:application.properties")
 public class AppConfiguration {
 
-    @Bean
+    @Bean("appProperties")
     public Properties applicationProperties() {
         Resource resource = new ClassPathResource("/application.properties");
         try {

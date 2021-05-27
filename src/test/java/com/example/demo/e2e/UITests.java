@@ -37,7 +37,7 @@ public class UITests {
     public void init() {
         this.host = Optional.ofNullable(System.getProperty("uitest.host"))
                 .orElseGet(() -> {
-                    log.error("please set env variable uitest.host");
+                    log.error("please set env variable uitest.host using localhost:8080");
                     return "http://localhost:8080";
                 });
         this.recipientMail = Optional.ofNullable(System.getProperty("uitest.mail"))
