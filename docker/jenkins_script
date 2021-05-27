@@ -17,7 +17,7 @@ pipeline {
         }
         stage('build java') {
             steps {
-                sh ' docker exec appContainer mvn -f ee_spring clean install -DskipTests '
+                sh ' docker exec appContainer mvn -f employee_service clean install -DskipTests '
 
 
             }
