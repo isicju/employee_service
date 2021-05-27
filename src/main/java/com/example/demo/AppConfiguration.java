@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -15,9 +16,11 @@ import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 
 import javax.sql.DataSource;
+import java.util.Optional;
 import java.util.Properties;
 
 import static org.apache.logging.log4j.util.Strings.isEmpty;
+
 @Log4j2
 @Configuration
 @PropertySource("classpath:application.properties")
@@ -84,18 +87,24 @@ public class AppConfiguration {
         return dataSource;
     }
 
-    @Profile({"test", "prod","uat"})
+    @Profile({"test", "prod", "uat"})
     @Bean("emailProperties")
-    public Properties emailProperties(Properties applicationProperties) {
+    public Properties emailProperties(@Qualifier("appProperties") Properties applicationProperties) {
         Properties properties = new Properties();
-
         properties.put("mail.smtp.host", applicationProperties.getProperty("mail.smtp.host"));
         properties.put("mail.smtp.port", applicationProperties.getProperty("mail.smtp.port"));
         properties.put("mail.smtp.starttls.enable", applicationProperties.getProperty("mail.smtp.starttls.enable"));
         properties.put("mail.smtp.auth", applicationProperties.getProperty("mail.smtp.auth"));
-        properties.put("fromEmail", applicationProperties.getProperty("fromEmail"));
-        properties.put("appPassword", applicationProperties.getProperty("appPassword"));
-
+        String fromEmail = Optional.ofNullable(System.getProperty("fromEmail")).orElseGet(() -> {
+            System.out.println("fromEmail system variable is null, using app properties value");
+            return applicationProperties.getProperty("fromEmail");
+        });
+        String appPassword = Optional.ofNullable(System.getProperty("appPassword")).orElseGet(() -> {
+            System.out.println("appPassword system variable is null, using app properties value");
+            return applicationProperties.getProperty("appPassword");
+        });
+        properties.put("fromEmail", fromEmail);
+        properties.put("appPassword", appPassword);
         return properties;
     }
 
