@@ -35,9 +35,9 @@ RUN apt-get update &&  apt-get install -y build-essential chrpath libssl-dev lib
  chmod 755 /usr/local/bin/phantomjs
 
 #Fetching project
-RUN git clone https://github.com/isicju/employee_service.git && cd employee_service && git fetch && git checkout ui_test_active
+RUN git clone https://github.com/isicju/employee_service.git && cd employee_service && git fetch
 
 #Fixing problem with Java ceritiface issue with Mail sending. As alternative - java 14 is required.
-RUN rm -rf /etc/java-8-openjdk/security/java.security && cp /ee_spring/java.security /etc/java-8-openjdk/security/java.security
+RUN rm -rf /etc/java-8-openjdk/security/java.security && cp /employee_service/java.security /etc/java-8-openjdk/security/java.security
 
 EXPOSE 8080
