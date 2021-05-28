@@ -44,6 +44,10 @@ public class AppConfiguration {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setPassword(applicationProperties.getProperty("database_password"));
         dataSource.setUser(applicationProperties.getProperty("database_user"));
+        if(System.getProperty("database_port") != null){
+            System.out.println("database port jvm param detected and i'll override one from app properties");
+            dataSource.setPort(Integer.valueOf(System.getProperty("database_port")));
+        }
         dataSource.setURL(applicationProperties.getProperty("database_url"));
         return dataSource;
     }
