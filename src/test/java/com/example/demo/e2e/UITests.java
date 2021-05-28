@@ -2,6 +2,7 @@ package com.example.demo.e2e;
 
 
 import com.example.demo.DemoApplication;
+import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -14,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -23,6 +25,7 @@ import org.springframework.test.context.event.annotation.BeforeTestClass;
 
 import java.io.File;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,6 +35,8 @@ public class UITests {
 
     private String host;
     private String recipientMail;
+    @Qualifier("appProperties")
+    private Properties properties;
 
     @BeforeEach
     public void init() {
@@ -61,13 +66,15 @@ public class UITests {
     }
 
     private void uiTest(WebDriver driver) throws Exception {
-        String[] args1 = {"--spring.profiles.active=test"};
+        String[] args1 = new String[0];
         ConfigurableApplicationContext ctx = SpringApplication.run(DemoApplication.class, args1);
-        Thread.sleep(30000);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
         driver.get(this.host);
+        Thread.sleep(15000);
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         WebElement secondRecord = driver.findElement(By.xpath("//table/tbody/tr[2]"));
         secondRecord.click();
+        Thread.sleep(1000);
         WebElement commentsToReport = driver.findElement(By.id("messageId"));
         commentsToReport.click();
         commentsToReport.sendKeys("some details for report");
@@ -75,7 +82,6 @@ public class UITests {
         emailAddress.click();
         emailAddress.sendKeys(this.recipientMail);
         Thread.sleep(1000);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,250)", "");
         Thread.sleep(1000);
         WebElement sendReportButton = driver.findElement(By.id("sendReport"));
@@ -84,7 +90,7 @@ public class UITests {
         sendReportButton.click();
         Thread.sleep(10000);
         assertTrue(sendReportButton.getAttribute("class").contains("btn-success"));
-        Thread.sleep(10000);
+        Thread.sleep(5000);
         ctx.close();
         driver.quit();
     }

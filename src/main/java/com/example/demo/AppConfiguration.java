@@ -38,7 +38,6 @@ public class AppConfiguration {
         }
     }
 
-    @Profile("prod")
     @Bean
     public DataSource prodDataSource(@Qualifier("appProperties") Properties applicationProperties) {
         log.info("initializing datasource prod database...");
@@ -49,7 +48,6 @@ public class AppConfiguration {
         return dataSource;
     }
 
-    @Profile("prod")
     @Bean("emailProperties")
     public Properties emailProperties(@Qualifier("appProperties") Properties applicationProperties) {
         Properties properties = new Properties();
