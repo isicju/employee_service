@@ -52,7 +52,7 @@ public class UITests {
                 });
     }
 
-    @Test
+//    @Test
     public void phantomDriver() throws Exception {
         uiTest(new PhantomJSDriver());
     }
