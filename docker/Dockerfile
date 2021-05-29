@@ -40,4 +40,6 @@ RUN git clone https://github.com/isicju/employee_service.git && cd employee_serv
 #Fixing problem with Java ceritiface issue with Mail sending. As alternative - java 14 is required.
 RUN rm -rf /etc/java-8-openjdk/security/java.security && cp /employee_service/java.security /etc/java-8-openjdk/security/java.security
 
+WORKDIR "/employee_service"
+
 EXPOSE 8080
