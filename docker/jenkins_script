@@ -3,26 +3,50 @@ pipeline {
     agent any
 
     stages {
-        stage('Hello') {
+        stage('Initializing prod pipeline') {
             steps {
-                echo 'Hello World'
+                echo 'Jenkins started..'
             }
         }
         stage('attach to container') {
             steps {
-                sh 'docker stop appContainer'
-                sh 'docker rm appContainer'
-                sh 'docker run -t -d --name appContainer -p 8081:8081 appimage /bin/bash'
+                sh 'docker stop appContainer || true '
+                sh 'docker rm appContainer || true '
+                sh 'docker run -t -d --name appContainer -p 8081:8080 appimage /bin/bash'
             }
         }
-        stage('build java') {
+
+        stage('changing branch to main') {
             steps {
-                sh ' docker exec appContainer mvn -f employee_service clean install -DskipTests '
-
-
+                sh ' docker exec uatContainer git checkout main'
+            }
+        }
+        stage('building java without tests') {
+            steps {
+                sh ' docker exec appContainer mvn clean install -DskipTests '
+            }
+        }
+        stage('running unit tests') {
+            steps {
+                sh ' docker exec appContainer mvn -Dtest=ReportRequestTest test '
             }
         }
 
+        stage('running integration tests') {
+            steps {
+                sh ' docker exec appContainer mvn -Dtest=Employee* test '
+            }
+        }
+        stage('running ui tests') {
+            steps {
+                sh ' docker exec appContainer mvn -Dtest=UITests test '
+            }
+        }
 
+        stage('deploying the app') {
+            steps {
+                sh ' docker exec -d appContainer /bin/bash -c "java -jar -Ddatabase_port=3306 target/demo-0.0.1-SNAPSHOT.jar" '
+            }
+        }
     }
 }
