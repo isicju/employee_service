@@ -7,6 +7,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableCell from "@material-ui/core/TableCell/TableCell";
 import TableBody from "@material-ui/core/TableBody";
+import FormControl from "@material-ui/core/FormControl";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 
 class EmployeeTable extends React.Component {
 
@@ -59,7 +62,128 @@ class EmployeeTable extends React.Component {
 
 }
 
+const divStyle = {
+    background: "#eee",
+    margin: "5px"
+};
+
+class EmployeeDetails extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            id: "", firstName: "", lastName: "", salary: "",
+            location: "", jobTitle: "", departmentName: "",
+            managerName: "", email: "", reportMessage: ""
+        };
+
+    }
+
+    render() {
+        return (
+            <FormControl fullWidth>
+                <TextField
+                    InputLabelProps={{shrink: true}}
+                    value={this.state.firstName}
+                    disabled
+                    style={divStyle}
+                    id="name"
+                    label="Employee Name"
+                    variant="outlined"
+                />
+                <TextField
+                    disabled
+                    InputLabelProps={{shrink: true}}
+                    value={this.state.lastName}
+                    style={divStyle}
+                    id="lastName"
+                    label="Employee Last Name"
+                    variant="outlined"
+                />
+                <TextField
+                    disabled
+                    InputLabelProps={{shrink: true}}
+                    value={this.state.jobTitle}
+                    style={divStyle}
+                    id="jobId"
+                    label="Job Title"
+                    variant="outlined"
+                />
+                <TextField
+                    disabled
+                    InputLabelProps={{shrink: true}}
+                    value={this.state.departmentName}
+                    style={divStyle}
+                    id="departmentId"
+                    label="Department Name"
+                    variant="outlined"
+                />
+                <TextField
+                    disabled
+                    InputLabelProps={{shrink: true}}
+                    value={this.state.salary}
+                    style={divStyle}
+                    label="Salary"
+                    variant="outlined"
+                    type="number"
+                />
+                <TextField
+                    disabled
+                    InputLabelProps={{shrink: true}}
+                    value={this.state.location}
+                    style={divStyle}
+                    label="Location"
+                    variant="outlined"
+                />
+                <TextField
+                    disabled
+                    InputLabelProps={{shrink: true}}
+                    value={this.state.managerName}
+                    style={divStyle}
+                    label="Manager"
+                    variant="outlined"
+                />
+                <TextField
+                    value={this.state.reportMessage}
+                    style={divStyle}
+                    label="Comments to Report"
+                    variant="outlined"
+                    onChange={this.onReportUpdate}
+                />
+                <TextField
+                    value={this.state.email}
+                    style={divStyle}
+                    id="location"
+                    label="Email to sent"
+                    variant="outlined"
+                    onChange={this.onEmailUpdate}
+                />
+
+            </FormControl>
+        );
+    }
+
+
+}
+
+
+// class EmployeeWrapper extends React.Component {
+//     constructor() {
+//         super();
+//
+//     }
+//
+// }
+
 ReactDOM.render(
-    <EmployeeTable/>,
+    <Grid container>
+        <Grid item sm={12} md={6} >
+            <EmployeeTable />
+        </Grid>
+        <Grid item sm={12} md={6}>
+            <EmployeeDetails />
+        </Grid>
+    </Grid>
+   ,
     document.getElementById('root')
 );
