@@ -83,8 +83,26 @@ class EmployeeDetails extends React.Component {
         this.onReportUpdate = this.onReportUpdate.bind(this);
     }
 
-    sendEmail(){
-        console.log("clicked: " + this.state.email);
+    sendEmail() {
+
+        console.log("report message: " + this.state.reportMessage);
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email: this.state.email,
+                employeeId: this.state.id,
+                reportMessage: this.state.reportMessage
+            })
+        };
+
+        fetch('http://localhost:8080/employees/mail/', requestOptions)
+            .then(response => response.json())
+            .then(response => {
+                alert("email was sent!");
+            }).catch(function (error) {
+                alert("Error sending email")
+        });
     }
 
     onEmailUpdate(newValue){
