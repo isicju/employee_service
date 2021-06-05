@@ -18,7 +18,7 @@ pipeline {
 
         stage('changing branch to main') {
             steps {
-                sh ' docker exec uatContainer git checkout main'
+                sh ' docker exec appContainer git checkout main'
             }
         }
         stage('building java without tests') {
