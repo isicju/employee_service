@@ -16,6 +16,7 @@ class EmployeeTable extends React.Component {
     constructor(){
         super();
         this.state = {rows:[]}
+
     }
 
     componentWillMount() {
@@ -34,7 +35,7 @@ class EmployeeTable extends React.Component {
     }
 
     render() {
-        return(
+        return (
             <TableContainer>
                 <Table>
                     <TableHead>
@@ -47,7 +48,7 @@ class EmployeeTable extends React.Component {
                     </TableHead>
                     <TableBody>
                         {this.state.rows.map((row) => (
-                            <TableRow >
+                            <TableRow onClick={() => this.props.clickHandler(row.id)} key={row.id}>
                                 <TableCell>{row.firstName}</TableCell>
                                 <TableCell>{row.lastName}</TableCell>
                                 <TableCell>{row.salary}</TableCell>
@@ -57,7 +58,7 @@ class EmployeeTable extends React.Component {
                     </TableBody>
                 </Table>
             </TableContainer>
-        )
+        );
     }
 
 }
@@ -76,7 +77,27 @@ class EmployeeDetails extends React.Component {
             location: "", jobTitle: "", departmentName: "",
             managerName: "", email: "", reportMessage: ""
         };
+    }
 
+    componentWillReceiveProps(newProps) {
+        fetch('http://localhost:8080/employees/details/' + newProps.employeeDetailsProps.id)
+            .then(response => response.json())
+            .then(response => {
+
+                this.setState({
+                    id: response.id,
+                    firstName: response.firstName,
+                    lastName: response.lastName,
+                    salary: response.salary,
+                    location: response.location,
+                    jobTitle: response.jobTitle,
+                    departmentName: response.departmentName,
+                    managerName: response.managerName,
+                    email: "",
+                    reportMessage: ""
+                });
+
+            });
     }
 
     render() {
@@ -166,24 +187,35 @@ class EmployeeDetails extends React.Component {
 
 }
 
+class EmployeeWrapper extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {employeeDetailsState: {id: 100}};
+    }
 
-// class EmployeeWrapper extends React.Component {
-//     constructor() {
-//         super();
-//
-//     }
-//
-// }
+    onEmployeeSelectedListener = (employeeId) => {
+        console.log("works: " + employeeId);
+        this.setState({employeeDetailsState: {id: employeeId}})
+    };
+
+
+    render() {
+        return (<Grid container>
+
+            <Grid item sm={12} md={6}>
+                <EmployeeTable clickHandler={this.onEmployeeSelectedListener}/>
+            </Grid>
+
+            <Grid item sm={12} md={6}>
+                <EmployeeDetails employeeDetailsProps={this.state.employeeDetailsState}/>
+            </Grid>
+        </Grid>);
+    }
+
+}
+
 
 ReactDOM.render(
-    <Grid container>
-        <Grid item sm={12} md={6} >
-            <EmployeeTable />
-        </Grid>
-        <Grid item sm={12} md={6}>
-            <EmployeeDetails />
-        </Grid>
-    </Grid>
-   ,
+    <EmployeeWrapper/>,
     document.getElementById('root')
 );
