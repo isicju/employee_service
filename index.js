@@ -77,6 +77,22 @@ class EmployeeDetails extends React.Component {
             location: "", jobTitle: "", departmentName: "",
             managerName: "", email: "", reportMessage: ""
         };
+
+        this.sendEmail = this.sendEmail.bind(this);
+        this.onEmailUpdate = this.onEmailUpdate.bind(this);
+        this.onReportUpdate = this.onReportUpdate.bind(this);
+    }
+
+    sendEmail(){
+        console.log("clicked: " + this.state.email);
+    }
+
+    onEmailUpdate(newValue){
+        this.setState({email:newValue.target.value});
+    }
+
+    onReportUpdate(newValue){
+        this.setState({reportMessage:newValue.target.value});
     }
 
     componentWillReceiveProps(newProps) {
@@ -179,7 +195,9 @@ class EmployeeDetails extends React.Component {
                     variant="outlined"
                     onChange={this.onEmailUpdate}
                 />
-
+                <Button onClick={this.sendEmail} variant="contained" color="primary">
+                    Send Email
+                </Button>
             </FormControl>
         );
     }
