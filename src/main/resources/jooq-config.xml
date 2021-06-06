@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.13.0.xsd">
+
+    <jdbc>
+        <driver>com.mysql.jdbc.Driver</driver>
+        <url>jdbc:mysql://51.124.98.77:3306/hr</url>
+        <user>root</user>
+        <password>secret_password</password>
+    </jdbc>
+
+    <generator>
+        <name>org.jooq.codegen.JavaGenerator</name>
+
+        <database>
+            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+            <inputSchema>public</inputSchema>
+            <includes>.*</includes>
+            <excludes></excludes>
+        </database>
+
+        <target>
+            <packageName>com.example.demo.dao.jooq</packageName>
+            <directory>C:\Users\isicj\projects\employee_service\src\main\java\com\example\demo\dao\jooq</directory>
+        </target>
+    </generator>
+</configuration>

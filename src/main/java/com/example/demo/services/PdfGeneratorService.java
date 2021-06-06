@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.dao.EmployeeDetails;
+import com.example.demo.dao.jdbc.EmployeeDetails;
 import com.lowagie.text.Document;
 import com.lowagie.text.Font;
 import com.lowagie.text.Paragraph;

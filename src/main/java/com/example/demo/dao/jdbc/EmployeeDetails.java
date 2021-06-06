@@ -1,4 +1,4 @@
-package com.example.demo.dao;
+package com.example.demo.dao.jdbc;
 
 import lombok.Builder;
 import lombok.Data;

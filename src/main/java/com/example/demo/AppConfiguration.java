@@ -10,6 +10,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -41,7 +42,7 @@ public class AppConfiguration {
         dataSource.setPassword(applicationProperties.getProperty("database_password"));
         dataSource.setUser(applicationProperties.getProperty("database_user"));
         dataSource.setURL(applicationProperties.getProperty("database_url"));
-        if(System.getProperty("database_port") != null){
+        if (System.getProperty("database_port") != null) {
             System.out.println("database port jvm param detected " + System.getProperty("database_port") +
                     " and it will override one from app properties");
             dataSource.setPort(Integer.valueOf(System.getProperty("database_port")));
@@ -77,8 +78,13 @@ public class AppConfiguration {
         return em;
     }
 
-        @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+    @Bean
+    public JdbcTemplate jdbcTemplate(DataSource dataSource){
+        return new JdbcTemplate(dataSource);
+    }
+
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 

@@ -1,13 +1,11 @@
 package com.example.demo.services;
 
-import com.example.demo.dao.EmployeeDetails;
-import com.example.demo.services.PdfGeneratorService;
+import com.example.demo.dao.jdbc.EmployeeDetails;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @AutoConfigureMockMvc

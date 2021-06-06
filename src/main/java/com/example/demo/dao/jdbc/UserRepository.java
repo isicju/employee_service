@@ -1,4 +1,4 @@
-package com.example.demo.dao;
+package com.example.demo.dao.jdbc;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
