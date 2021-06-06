@@ -1,6 +1,8 @@
 package com.example.demo;
 
+import com.example.demo.dao.data.EmployeeRepository;
 import com.example.demo.dao.orm.Countries;
+import com.example.demo.dao.orm.Employees;
 import com.example.demo.dao.orm.JpaDao;
 import com.example.demo.dao.template.EmployeeTemplate;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +24,15 @@ public class DemoApplication {
         //Using Jpa Hibernate style
         checkJpaHibernate(context);
 
+        //Using Jpa + Spring Data
+        checkSpringData(context);
+    }
+
+    private static void checkSpringData(ApplicationContext context){
+        EmployeeRepository employeeRepository =  ((EmployeeRepository)context.getBean("employeeRepository"));
+        Iterable<Employees> employeeList = employeeRepository.findAll();
+        Employees employee100Id = employeeRepository.findById(100L).get();
+        ((EmployeeRepository)context.getBean("employeeRepository")).findByFirstName("Lex");
     }
 
     private static void checkJdbcTemplate(ApplicationContext context){
