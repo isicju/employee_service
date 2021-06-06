@@ -59,10 +59,7 @@ public class UITests {
                     return "http://localhost:8080";
                 });
         String recipientMail = Optional.ofNullable(appProperties.getProperty("uitest.mail"))
-                .orElseGet(() -> {
-                    log.error("please set env variable uitest.mail, currently use default email");
-                    return "isicju@gmail.com";
-                });
+                .orElseThrow(() -> new RuntimeException("please set env variable uitest.mail "));
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
         driver.get(host);
