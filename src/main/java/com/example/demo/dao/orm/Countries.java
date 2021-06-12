@@ -62,4 +62,13 @@ public class Countries {
         result = 31 * result + (regionId != null ? regionId.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Countries{" +
+                "countryId='" + countryId + '\'' +
+                ", countryName='" + countryName + '\'' +
+                ", regionId=" + regionId +
+                '}';
+    }
 }
