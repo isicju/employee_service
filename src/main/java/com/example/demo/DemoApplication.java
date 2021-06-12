@@ -23,19 +23,17 @@ public class DemoApplication {
         EmployeeRepository employeeRepository = (EmployeeRepository) context.getBean("employeeRepository");
         CountryRepository countryRepository = (CountryRepository) context.getBean("countryRepository");
 //        JpaDao jpaDao =   (JpaDao)context.getBean("jpaDao");
-        Iterator<Employees> iterator = employeeRepository.findAll().iterator();
-        iterator.forEachRemaining(each -> {
-            System.out.println(each);
-        });
+        List<Employees> employeesByName = employeeRepository.findByFirstName("Neena");
+        employeesByName.forEach(employees -> System.out.println(employees));
 
-        Countries countries = new Countries();
-        countries.setCountryId("F7");
-        countries.setCountryName("F7 land");
-        countries.setRegionId(4);
-
-        countryRepository.save(countries);
-
-        System.out.println("new country found by id: " + countryRepository.findById("F7").get());
+//        Countries countries = new Countries();
+//        countries.setCountryId("F7");
+//        countries.setCountryName("F7 land");
+//        countries.setRegionId(4);
+//
+//        countryRepository.save(countries);
+//
+//        System.out.println("new country found by id: " + countryRepository.findById("F7").get());
 
 
         //        System.out.println("number of records: " + jpaDao.findAll().size());
