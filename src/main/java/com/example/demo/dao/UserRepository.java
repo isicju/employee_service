@@ -1,6 +1,7 @@
 package com.example.demo.dao;
 
 import lombok.AllArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -14,6 +15,7 @@ import java.util.List;
 public class UserRepository {
 
     private final DataSource dataSource;
+    private final JdbcTemplate jdbcTemplate;
 
     private final String EMPLOYEE_DETAILS = "SELECT e.employee_id , e.first_name, " +
             "       e.last_name, " +
@@ -39,6 +41,7 @@ public class UserRepository {
              Statement statement = connection.createStatement()
         ) {
             ResultSet rs = statement.executeQuery(query);
+
             while (rs.next()) {
                 employees.add(
                         Employee.builder()
@@ -51,11 +54,17 @@ public class UserRepository {
                                 .build()
                 );
             }
+
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
         return employees;
     }
+
+
+
+
+
 
     public EmployeeDetails getEmployeeFullDetails(Integer id) {
         try (Connection conn = dataSource.getConnection();
