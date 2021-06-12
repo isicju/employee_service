@@ -5,9 +5,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Repository
@@ -61,10 +63,18 @@ public class UserRepository {
         return employees;
     }
 
+    public List<Employee> getEmployeesTemplate(){
+        List<Map<String,Object>> employeeRawMap = jdbcTemplate.queryForList("SELECT * FROM hr.employees");
 
-
-
-
+        List<Employee> employees = new ArrayList<>();
+        for (Map<String, Object> country : employeeRawMap) {
+            String firstName = (String)country.get("first_name");
+            String lastName = (String)country.get("last_name");
+            Integer salary = ((BigDecimal) country.get("salary")).intValue();
+            employees.add(Employee.builder().firstName(firstName).lastName(lastName).salary(salary).build());
+        }
+        return employees;
+    }
 
     public EmployeeDetails getEmployeeFullDetails(Integer id) {
         try (Connection conn = dataSource.getConnection();
